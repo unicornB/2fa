@@ -4,5 +4,5 @@ package model
 
 func migration() {
 	// 自动迁移模式
-	_ = DB.AutoMigrate(&Admin{}, &BizData{}, &User{})
+	_ = DB.AutoMigrate(&Admin{})
 }
