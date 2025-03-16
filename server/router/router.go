@@ -1,37 +1,29 @@
 package router
 
 import (
-	"gongniu/api"
-	"gongniu/middleware"
 	"os"
+
+	"2fa.com/api"
+	"2fa.com/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NewRouter() *gin.Engine {
 	r := gin.Default()
-	//r.Use(middleware.Cors())
 	//日志请求
 	r.Use(middleware.ReqLogMiddleware())
 	//签名验证
 	r.Use(middleware.SignatureMiddleware(os.Getenv("SIGN_SECRET_KEY")))
-	r.POST("/login", api.Login)
-	r.GET("/bizData/:bizKey", api.GetBizData)
-	r.PUT("/bizData/UpdateBizData", api.UpdateBizData)
-	r.GET("/admin/userlist", api.UserList)
-	r.PUT("/admin/userpass", api.UserEditPass)
-	r.POST("/admin/useradd", api.UserAdd)
-	r.DELETE("/admin/userdel/:id", api.UserDel)
-	// 路由分组
-	v1 := r.Group("/api/v1")
+	r.GET("/", api.Login)
+	//分组 并添加中间件
+	user := r.Group("/api/user")
+	user.POST("/login", api.UserLogin)
+	user.POST("/send_email_code", api.UserSendEmailCode)
+	user.Use(middleware.CurrentUser()).
+		Use(middleware.AuthUserRequired())
 	{
-		v1.POST("/login", api.UserLogin)
-		v1.Use(middleware.CurrentUser())
-		auth := v1.Group("")
-		auth.Use(middleware.AuthUserRequired())
-		{
-			auth.GET("/user", api.UserInfo)
-		}
+		user.GET("/getMe", api.UserGetMe)
 	}
 	return r
 }

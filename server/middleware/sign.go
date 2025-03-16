@@ -1,10 +1,12 @@
 package middleware
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"sort"
 	"strconv"
@@ -12,6 +14,7 @@ import (
 	"sync"
 	"time"
 
+	"2fa.com/serializer"
 	"github.com/gin-gonic/gin"
 )
 
@@ -155,12 +158,18 @@ func SignatureMiddleware(secret string) gin.HandlerFunc {
 			contentType := c.Request.Header.Get("Content-Type")
 			if strings.Contains(contentType, "application/json") {
 				// 处理 application/json
+				var jsonData map[string]interface{}
 				decoder := json.NewDecoder(c.Request.Body)
-				if err = decoder.Decode(&req.Data); err != nil {
+				if err = decoder.Decode(&jsonData); err != nil {
 					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 					c.Abort()
 					return
 				}
+				for k, v := range jsonData {
+					req.Data[k] = v
+				}
+				reqDataBytes, _ := json.Marshal(jsonData)
+				c.Request.Body = io.NopCloser(bytes.NewBuffer(reqDataBytes))
 			} else if strings.Contains(contentType, "application/x-www-form-urlencoded") {
 				// 处理 application/x-www-form-urlencoded
 				if err = c.Request.ParseForm(); err != nil {
@@ -180,21 +189,23 @@ func SignatureMiddleware(secret string) gin.HandlerFunc {
 
 		// 检查时间戳是否有效
 		if !isValidTimestamp(req.Timestamp) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid timestamp"})
+			c.JSON(200, serializer.TimestampError("Invalid timestamp"))
 			c.Abort()
 			return
 		}
 
 		// 检查随机数是否已使用
 		if isNonceUsed(req.Nonce) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Nonce already used"})
+			//c.JSON(http.StatusUnauthorized, gin.H{"error": "Nonce already used"})
+			c.JSON(200, serializer.NonceError("Nonce already used"))
 			c.Abort()
 			return
 		}
 
 		// 验证签名
 		if !verifySign(req.Data, req.Sign, req.Secret) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
+			//c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
+			c.JSON(200, serializer.SignError("Invalid signature"))
 			c.Abort()
 			return
 		}

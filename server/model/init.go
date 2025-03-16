@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -33,10 +32,7 @@ func Database(connString string) {
 		panic(err)
 	}
 	DB = db
-	fmt.Println("连接数据库成功")
+
 	migration()
-	var admin Admin
-	admin.InitAdmin()
-	var user User
-	user.InitUser()
+
 }

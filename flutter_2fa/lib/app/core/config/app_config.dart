@@ -35,4 +35,10 @@ class AppConfig {
 
   /// 反向代理的IP:端口
   static const proxyAddress = '192.168.2.201:9003';
+
+  static const String signKey =
+      'rkdcQU6eIEfe5dDoM6Lr8U6jUGdSZKDTZuV2Y6JDmJ1m7xv8NF3tZfBlkn8LbYi7';
+
+  static const String rsaPublicKey =
+      "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAucm9UJcsvjqsg4kIv05FWL8D8kegKKjnbjY/yXn+58P/8djpRh+yJHXPlYUK5I6UVTQaWVM4CQ5x6DI2Wi7BAUFSl59CeP0jqtgjTLi7tR+ThjX/4hcoUCFhsWM0FLY9gkOhHXFG8S8mUr6SaK2hvPCogl+HOdBG7kRp+7+/bqD89SsLvySHj0Rx/1tXbGKnEVLuCkGKKxtwoVXtB4utdwupIl7lBbipbOxiLj12bziuaFsqPgblyw/dl0aIDD5i7/nNIOmvCyRBFS/6+lFyAsUMWEct9ejtRDOJsVb+xueSbYf4TNO/Ln5q1vAZxJk6+BDLWzfoz7xi3i7nHNaHSQIDAQAB\n-----END PUBLIC KEY-----";
 }

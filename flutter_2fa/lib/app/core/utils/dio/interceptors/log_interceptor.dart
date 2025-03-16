@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_2fa/app/core/utils/tool/tips_util.dart';
+import 'package:flutter_2fa/app/routes/app_pages.dart';
+import 'package:get/route_manager.dart';
 import '../../../config/app_config.dart';
 
 /*
@@ -24,7 +30,13 @@ class LogsInterceptors extends InterceptorsWrapper {
     if (AppConfig.DEBUG) {
       print('返回参数: $response');
     }
-
+    log("code$response");
+    var json = jsonDecode(response.data.toString());
+    if (json['code'] == 401) {
+      //未登录
+      Tips.info("未登录");
+      Get.offAndToNamed(Routes.LOGIN);
+    }
     return handler.next(response);
   }
 
@@ -32,7 +44,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onError(DioException err, handler) async {
     if (AppConfig.DEBUG) {
-      print('请求异常信息: ${err.error}');
+      print('请求错误: $err');
     }
     return handler.next(err);
   }

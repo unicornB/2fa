@@ -2,8 +2,9 @@ package conf
 
 import (
 	"fmt"
-	"gongniu/model"
 	"os"
+
+	"2fa.com/model"
 
 	"github.com/joho/godotenv"
 )

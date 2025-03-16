@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:flutter_2fa/app/core/utils/dio/interceptors/sign_interceptor.dart';
 import '../../config/app_config.dart';
 import 'interceptors/header_interceptor.dart';
 import 'interceptors/log_interceptor.dart';
@@ -16,6 +18,7 @@ Dio _initDio() {
   Dio dioClient = Dio(baseOpts); // 实例化请求，可以传入options参数
   dioClient.interceptors.addAll([
     HeaderInterceptors(),
+    SignInterceptors(),
     LogsInterceptors(),
   ]);
 
@@ -69,7 +72,7 @@ Future<T> safeRequest<T>(
     return Request.dioClient
         .request(
           url,
-          data: data,
+          data: data, // 确保数据被正确编码,
           queryParameters: queryParameters,
           options: options,
           cancelToken: cancelToken,
@@ -106,8 +109,15 @@ class Request {
   }) async {
     return safeRequest<T>(
       url,
-      options: options?.copyWith(method: 'POST') ?? Options(method: 'POST'),
-      data: data,
+      options: options?.copyWith(
+            method: 'POST',
+            contentType: Headers.jsonContentType,
+          ) ??
+          Options(
+            method: 'POST',
+            contentType: Headers.jsonContentType,
+          ),
+      data: data, // 确保数据被正确编码为JSON字符串,
       queryParameters: queryParameters,
     );
   }

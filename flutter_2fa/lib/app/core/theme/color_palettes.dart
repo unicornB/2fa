@@ -88,6 +88,11 @@ class ColorPalettes {
   Color get separator => palettes[palettesStyle.value]!.separator;
 
   Color get inputBackground => palettes[palettesStyle.value]!.inputBackground;
+
+  Color get btnDisableBackground =>
+      palettes[palettesStyle.value]!.btnDisableBackground;
+
+  Color get btnDisableText => palettes[palettesStyle.value]!.btnDisableText;
 }
 
 /// 主题色类型

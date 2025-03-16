@@ -10,6 +10,7 @@ class HeaderInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options, handler) async {
     options.baseUrl = AppConfig.host;
+    options.contentType = 'application/json';
     return handler.next(options);
   }
 

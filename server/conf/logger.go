@@ -18,4 +18,8 @@ func InitLogger() {
 	// 配置 logrus 使用 lumberjack 作为输出
 	logrus.SetOutput(lumberjackLogger)
 	logrus.SetLevel(logrus.InfoLevel) // 设置日志级别
+	logrus.SetFormatter(&logrus.TextFormatter{
+		TimestampFormat: "2006-01-02 15:04:05",
+		FullTimestamp:   true,
+	})
 }

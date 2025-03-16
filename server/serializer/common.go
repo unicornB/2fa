@@ -35,6 +35,12 @@ const (
 	CodeEncryptError = 50002
 	//CodeParamErr 各种奇奇怪怪的参数错误
 	CodeParamErr = 40001
+	//签名错误
+	CodeSignError = 40002
+	//时间戳错误
+	CodeTimestampError = 40003
+	//随机数错误
+	CodeNonceError = 40004
 )
 
 // CheckLogin 检查登录
@@ -90,6 +96,24 @@ func SuccessNoData() Response {
 func Error(msg string) Response {
 	return Response{
 		Code: 0,
+		Msg:  msg,
+	}
+}
+func SignError(msg string) Response {
+	return Response{
+		Code: CodeSignError,
+		Msg:  msg,
+	}
+}
+func TimestampError(msg string) Response {
+	return Response{
+		Code: CodeTimestampError,
+		Msg:  msg,
+	}
+}
+func NonceError(msg string) Response {
+	return Response{
+		Code: CodeNonceError,
 		Msg:  msg,
 	}
 }

@@ -17,4 +17,6 @@ class IPalette {
   late Color divider;
   late Color separator;
   late Color inputBackground;
+  late Color btnDisableBackground;
+  late Color btnDisableText;
 }

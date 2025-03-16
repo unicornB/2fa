@@ -2,10 +2,11 @@ package middleware
 
 import (
 	"fmt"
-	"gongniu/model"
-	"gongniu/serializer"
-	"gongniu/utils"
 	"os"
+
+	"2fa.com/model"
+	"2fa.com/serializer"
+	"2fa.com/utils"
 
 	"github.com/gin-gonic/gin"
 )

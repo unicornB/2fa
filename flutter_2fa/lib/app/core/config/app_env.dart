@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,10 +16,10 @@ enum ENV {
 
 // dio请求前缀
 final Map<ENV, String> _baseUrl = {
-  ENV.DEV: 'https://apifoxmock.com',
-  ENV.TEST: 'https://urltest.com',
-  ENV.PRE: 'https://urlpre.com',
-  ENV.PROD: 'https://url.com',
+  ENV.DEV: 'http://localhost:3000',
+  ENV.TEST: 'http://localhost:3000',
+  ENV.PRE: 'http://localhost:3000',
+  ENV.PROD: 'http://localhost:3000',
 };
 
 class AppEnv {
@@ -30,6 +31,7 @@ class AppEnv {
 
   void init() {
     const envStr = String.fromEnvironment("INIT_ENV", defaultValue: "prod");
+    log('envStr:$envStr');
     if (!kIsWeb && Platform.isAndroid) {
       _androidChannel =
           const String.fromEnvironment("ANDROID_CHANNEL", defaultValue: "");
@@ -50,6 +52,7 @@ class AppEnv {
       default:
         currentEnv = ENV.PROD;
     }
+    log('当前环境$currentEnv');
     LogUtil.d('当前环境$currentEnv');
   }
 

@@ -1,51 +1,32 @@
 package api
 
 import (
-	"gongniu/serializer"
-	"gongniu/service"
-
+	"2fa.com/serializer"
+	"2fa.com/service"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func UserLogin(c *gin.Context) {
-	var service service.UserService
-	if err := c.ShouldBind(&service); err == nil {
-		res := service.Login(c)
+	var userService service.UserService
+	if err := c.ShouldBindJSON(&userService); err == nil {
+		res := userService.Login()
 		c.JSON(200, res)
 	} else {
+		logrus.Error(err)
 		c.JSON(200, serializer.Error("参数错误"))
 	}
 }
-func UserInfo(c *gin.Context) {
-	var service service.UserService
-	res := service.UserInfo(c)
-	c.JSON(200, res)
-}
-func UserList(c *gin.Context) {
-	var service service.UserService
-	res := service.UserList(c)
-	c.JSON(200, res)
-}
-func UserEditPass(c *gin.Context) {
-	var service service.UserEditService
-	if err := c.ShouldBind(&service); err == nil {
-		res := service.UserEditPass(c)
+func UserSendEmailCode(c *gin.Context) {
+	var userSendMailService service.UserSendMailService
+	if err := c.ShouldBindJSON(&userSendMailService); err == nil {
+		res := userSendMailService.SendEmail(c)
 		c.JSON(200, res)
 	} else {
+		logrus.Error(err)
 		c.JSON(200, serializer.Error("参数错误"))
 	}
 }
-func UserAdd(c *gin.Context) {
-	var service service.UserService
-	if err := c.ShouldBind(&service); err == nil {
-		res := service.UserAdd(c)
-		c.JSON(200, res)
-	} else {
-		c.JSON(200, serializer.Error(err.Error()))
-	}
-}
-func UserDel(c *gin.Context) {
-	var service service.UserService
-	res := service.UserDelete(c)
-	c.JSON(200, res)
+func UserGetMe(c *gin.Context) {
+	c.JSON(200, serializer.Error("参数错误"))
 }

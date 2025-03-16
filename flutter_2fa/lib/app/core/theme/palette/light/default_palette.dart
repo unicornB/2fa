@@ -10,13 +10,13 @@ class DefaultPalette extends IPalette {
   @override
   Color pure = const Color(0xFFFFFFFF);
   @override
-  Color primary = const Color(0xFFF0484E);
+  Color primary = const Color(0xFF336DF3);
   @override
   Color primaryVariant = const Color(0xFFEC3037);
   @override
   Color secondary = const Color(0xFFF0888C);
   @override
-  Color background = const Color(0xFFFAFAFA);
+  Color background = const Color(0xFFF1F3F4);
   @override
   Color firstText = const Color(0xFF333333);
   @override
@@ -37,4 +37,8 @@ class DefaultPalette extends IPalette {
   Color separator = const Color(0xFFF9F9F9);
   @override
   Color inputBackground = const Color(0xFFEEEEEE);
+  @override
+  Color btnDisableBackground = const Color(0xFFBBBFC4);
+  @override
+  Color btnDisableText = const Color(0xFFFFFFFF);
 }
