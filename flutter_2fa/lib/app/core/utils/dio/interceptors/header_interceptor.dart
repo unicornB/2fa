@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_2fa/app/core/utils/tool/preference_utils.dart';
 
 import '../../../config/app_config.dart';
 
@@ -17,6 +18,12 @@ class HeaderInterceptors extends InterceptorsWrapper {
     options.headers = {
       HttpHeaders.contentTypeHeader: AppConfig.contentType,
     };
+    var token = PreferenceUtils.instance.getString("token", "");
+    if (token.isNotEmpty) {
+      options.headers.addAll({
+        "Authorization": token,
+      });
+    }
 
     return handler.next(options);
   }

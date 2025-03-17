@@ -11,6 +11,6 @@ class UserApi {
 
   //登录
   static Future<dynamic> login(Object data) async {
-    return Request.post('/api/user/login', data: data);
+    return Request.postJson('/api/user/login', data: data);
   }
 }

@@ -94,7 +94,7 @@ func calculateSign(data map[string]interface{}, secret string) string {
 	// 过滤空值
 	filteredData := filteredNullData(data).(map[string]interface{})
 	paramStr := sortObjectString(filteredData, secret)
-	fmt.Println("paramStr:" + paramStr)
+	//fmt.Println("paramStr:" + paramStr)
 	hash := sha256.Sum256([]byte(paramStr))
 	return hex.EncodeToString(hash[:])
 }
@@ -156,11 +156,13 @@ func SignatureMiddleware(secret string) gin.HandlerFunc {
 		switch c.Request.Method {
 		case http.MethodPost, http.MethodPut, http.MethodDelete:
 			contentType := c.Request.Header.Get("Content-Type")
+
 			if strings.Contains(contentType, "application/json") {
 				// 处理 application/json
 				var jsonData map[string]interface{}
 				decoder := json.NewDecoder(c.Request.Body)
 				if err = decoder.Decode(&jsonData); err != nil {
+					fmt.Println("JSON decoding error:", err)
 					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 					c.Abort()
 					return

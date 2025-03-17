@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_2fa/app/core/extensions/rpx_int_extendsion.dart';
 import 'package:flutter_2fa/app/core/theme/color_palettes.dart';
+import 'package:flutter_2fa/app/modules/home/views/components/otp_item.dart';
 import '/app/core/extensions/string_extension.dart';
 
 import 'package:get/get.dart';
@@ -15,21 +16,40 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorPalettes.instance.background,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: ColorPalettes.instance.background,
+        backgroundColor: ColorPalettes.instance.primary,
         leading: IconButton(
           onPressed: () {},
-          icon:
-              "assets/svg/menu-2-line.svg".toSvg(width: 60.rpx, height: 60.rpx),
+          icon: "assets/svg/menu-2-line.svg".toSvg(
+            width: 50.rpx,
+            height: 50.rpx,
+            color: Colors.white,
+          ),
         ),
-        title: _searchBar(),
+        title: Text(
+          "星辰验证器",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 36.rpx,
+          ),
+        ),
         centerTitle: true,
         actions: [
+          IconButton(
+            onPressed: () async {},
+            icon: "assets/svg/search.svg".toSvg(
+              width: 50.rpx,
+              color: Colors.white,
+            ),
+          ),
           IconButton(
             onPressed: () async {
               var result = await BarcodeScanner.scan();
               log(result.rawContent);
+              if (result.rawContent == '') {
+                return;
+              }
               final parser = OTPAuthParser(result.rawContent);
               log('Type: ${parser.type}');
               log('Label: ${parser.label}');
@@ -39,17 +59,23 @@ class HomeView extends GetView<HomeController> {
               log('Algorithm: ${parser.algorithm}');
               log('OTP: ${parser.generateOTP()}');
             },
-            icon: "assets/svg/scan.svg".toSvg(width: 60.rpx),
+            icon: "assets/svg/add.svg".toSvg(
+              width: 50.rpx,
+              color: Colors.white,
+            ),
           ),
           SizedBox(
             width: 20.rpx,
-          )
+          ),
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          shrinkWrap: true,
+        padding: EdgeInsets.symmetric(horizontal: 30.rpx),
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return OtpItem();
+          },
+          itemCount: 10,
         ),
       ),
     );
@@ -57,18 +83,31 @@ class HomeView extends GetView<HomeController> {
 
   Widget _searchBar() {
     return SizedBox(
-      height: 45,
+      height: 70.rpx,
       child: TextField(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           hintText: '搜索',
+          hintStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 28.rpx,
+          ),
           prefixIcon: Icon(
             Remix.search_line,
-            color: Colors.black,
-            size: 24,
+            color: Colors.white,
+            size: 40.rpx,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(40.rpx),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40.rpx),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
           ),
         ),
       ),

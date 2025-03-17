@@ -26,7 +26,7 @@ class LoginView extends GetView<LoginController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 300.rpx,
+            height: 200.rpx,
           ),
           Row(
             children: [
@@ -131,10 +131,10 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
           SizedBox(
-            height: 50.rpx,
+            height: 60.rpx,
           ),
           SizedBox(
-            height: 90.rpx,
+            height: 80.rpx,
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -159,13 +159,16 @@ class LoginView extends GetView<LoginController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Checkbox(
-                activeColor: ColorPalettes.instance.primary,
-                value: controller.checked.value,
-                onChanged: (value) {
-                  controller.checked.value = value!;
-                  controller.changeSubmitBtnDisable();
-                },
+              Transform.scale(
+                scale: 0.8,
+                child: Checkbox(
+                  activeColor: ColorPalettes.instance.primary,
+                  value: controller.checked.value,
+                  onChanged: (value) {
+                    controller.checked.value = value!;
+                    controller.changeSubmitBtnDisable();
+                  },
+                ),
               ),
               Text(
                 "我已阅读并同意",

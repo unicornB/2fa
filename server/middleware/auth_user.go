@@ -15,6 +15,8 @@ func CurrentUser() gin.HandlerFunc {
 	fmt.Println("CurrentUser")
 	return func(c *gin.Context) {
 		var uid uint
+		//"Authorization": "Bearer $token",
+		//token := c.GetHeader("Authorization")
 		token := c.GetHeader("Authorization")
 		if token != "" {
 			user, err := utils.ParseJwt(token, os.Getenv("JWT_SECRET_USER"))

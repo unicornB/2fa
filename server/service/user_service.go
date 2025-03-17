@@ -12,20 +12,23 @@ import (
 )
 
 type UserService struct {
-	Email string `form:"username" json:"username" binding:"min=3,max=30"`
-	Code  string `form:"code" json:"code" binding:"required,min=6,max=6"`
+	Email string `form:"email" json:"email" binding:"required,min=3"`
+	Code  string `form:"code" json:"code" binding:"required,min=4"`
 }
 
 // 邮箱验证码登录，首先判断是否存在该用户，不存在则创建，存在则直接登录
-func (service *UserService) Login() serializer.Response {
+func (service *UserService) Login(c *gin.Context) serializer.Response {
+	fmt.Println("email:" + service.Email)
 	email, err := utils.RSA_Decrypt(service.Email)
 	if err != nil {
 		return serializer.Error("对不起，不支持你的邮箱")
 	}
+	fmt.Println("email:" + email)
 	code, err := utils.RSA_Decrypt(service.Code)
 	if err != nil {
 		return serializer.Error("对不起，不支持你的验证码")
 	}
+	fmt.Println("code:" + code)
 	//判断验证码是否正确，并且在5分钟内有效
 	var userEmailLog model.UserEmailLog
 	count := userEmailLog.GetSendCountByEmail(email, code)
@@ -40,10 +43,18 @@ func (service *UserService) Login() serializer.Response {
 	if result.Error != nil {
 		//不存在则创建
 		user := model.User{
-			Email: email,
+			Email:      email,
+			RegisterIp: c.ClientIP(),
+			Status:     1,
+			LoginIp:    c.ClientIP(),
 		}
 		DB.Create(&user)
+	} else {
+		//存在则更新登录时间
+		user.LoginIp = c.ClientIP()
+		DB.Save(&user)
 	}
+
 	//生成token
 	token, err := utils.GenerateJWT(email, os.Getenv("JWT_SECRET_USER"), user.Id)
 	if err != nil {

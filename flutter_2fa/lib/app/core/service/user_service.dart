@@ -25,8 +25,8 @@ class UserService extends GetxService {
     log(jsonEncode(res));
     if (res['code'] == 200) {
       isLogined.value = true;
-      loginToken.value = res['data']['token'];
-      PreferenceUtils.instance.putString("token", res['data']['token']);
+      loginToken.value = res['data'];
+      PreferenceUtils.instance.putString("token", res['data']);
       return true;
     }
     return false;

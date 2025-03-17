@@ -1,6 +1,7 @@
 package api
 
 import (
+	"2fa.com/model"
 	"2fa.com/serializer"
 	"2fa.com/service"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 func UserLogin(c *gin.Context) {
 	var userService service.UserService
 	if err := c.ShouldBindJSON(&userService); err == nil {
-		res := userService.Login()
+		res := userService.Login(c)
 		c.JSON(200, res)
 	} else {
 		logrus.Error(err)
@@ -28,5 +29,6 @@ func UserSendEmailCode(c *gin.Context) {
 	}
 }
 func UserGetMe(c *gin.Context) {
-	c.JSON(200, serializer.Error("参数错误"))
+	user := c.MustGet("user").(*model.User)
+	c.JSON(200, user)
 }

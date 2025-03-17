@@ -121,6 +121,29 @@ class Request {
     );
   }
 
+  static Future<T> postJson<T>(
+    String url, {
+    Options? options,
+    Object? data,
+  }) async {
+    return Request.dioClient
+        .post(
+          url,
+          options: Options(
+            method: 'POST',
+            contentType: AppConfig.contentType,
+            headers: {
+              'Content-Type': AppConfig.contentType,
+            },
+          ),
+          data: jsonEncode(data),
+        )
+        .then((data) => jsonDecode(data.data as String) as T)
+        .catchError((e) {
+      print("错误$e");
+    });
+  }
+
   /// put请求
   static Future<T> put<T>(
     String url, {
