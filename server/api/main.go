@@ -20,6 +20,6 @@ func Login(c *gin.Context) {
 		</body>
 		</html>
 	`, "123456")
-	utils.SendEmailV2("hylvip2014@163.com", "2fa验证", htmlContent)
+	utils.SendEmailV2("hylvip2014@163.com", "2fa验证", htmlContent, "验证器")
 	c.JSON(200, serializer.Success("登录成功", nil))
 }

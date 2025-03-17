@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
@@ -111,13 +110,13 @@ class Request {
       url,
       options: options?.copyWith(
             method: 'POST',
-            contentType: Headers.jsonContentType,
           ) ??
           Options(
             method: 'POST',
-            contentType: Headers.jsonContentType,
           ),
-      data: data, // 确保数据被正确编码为JSON字符串,
+      data: AppConfig.contentType == "application/json; charset=UTF-8"
+          ? jsonEncode(data)
+          : data, // 确保数据被正确编码为JSON字符串,
       queryParameters: queryParameters,
     );
   }

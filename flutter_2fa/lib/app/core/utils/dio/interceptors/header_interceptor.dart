@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import '../../../config/app_config.dart';
@@ -10,7 +13,11 @@ class HeaderInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options, handler) async {
     options.baseUrl = AppConfig.host;
-    options.contentType = 'application/json';
+    options.contentType = AppConfig.contentType;
+    options.headers = {
+      HttpHeaders.contentTypeHeader: AppConfig.contentType,
+    };
+
     return handler.next(options);
   }
 

@@ -9,6 +9,8 @@ class AppConfig {
   /// 是否开启dio接口详细信息输出，以及其它相关插件调试信息
   static const DEBUG = true;
 
+  static const String contentType = 'application/json; charset=UTF-8';
+
   /// 是否开启LogUtil类打印方法
   static const printFlag = true;
 

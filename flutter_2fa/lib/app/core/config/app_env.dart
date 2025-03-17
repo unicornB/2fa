@@ -19,7 +19,7 @@ final Map<ENV, String> _baseUrl = {
   ENV.DEV: 'http://localhost:3000',
   ENV.TEST: 'http://localhost:3000',
   ENV.PRE: 'http://localhost:3000',
-  ENV.PROD: 'http://localhost:3000',
+  ENV.PROD: 'http://192.168.2.94:3000',
 };
 
 class AppEnv {

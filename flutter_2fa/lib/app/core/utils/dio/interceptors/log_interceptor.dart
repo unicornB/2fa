@@ -21,6 +21,9 @@ class LogsInterceptors extends InterceptorsWrapper {
         print("""data参数: ${options.data}""");
       }
     }
+    if (AppConfig.contentType == "application/json; charset=UTF-8") {
+      options.data = jsonEncode(options.data);
+    }
     return handler.next(options);
   }
 

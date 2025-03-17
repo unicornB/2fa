@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -17,6 +18,9 @@ class SignInterceptors extends InterceptorsWrapper {
     //获取query参数和body参数，进行合并
     var params = options.queryParameters;
     var body = options.data;
+    if (options.data is String) {
+      body = jsonDecode(options.data);
+    }
     if (body != null) {
       params.addAll(body);
     }
