@@ -1,0 +1,2 @@
+/Users/apple/Work/2fa/2fa/flutter_2fa/android/app/.cxx/RelWithDebInfo/2j5d4q57/x86/CMakeFiles/edit_cache.dir
+/Users/apple/Work/2fa/2fa/flutter_2fa/android/app/.cxx/RelWithDebInfo/2j5d4q57/x86/CMakeFiles/rebuild_cache.dir
